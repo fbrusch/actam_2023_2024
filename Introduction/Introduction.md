@@ -2,10 +2,10 @@
 
 Some basic questions you might have:
 
-* What does "coding" mean?
+* What does _coding_ mean?
 * What is our goal?
 * What _tools_ will we learn to use?
-* What methodologies?
+* What _methodologies_?
 * How will you be evaluated?
 
 ---
@@ -19,6 +19,8 @@ Some basic questions you might have:
 * What are programming languages main uses?
 * Are they useful? Are they worth learning/mastering?
 * If so, why?
+
+---
 
 ## Implementing Applications
 
@@ -34,9 +36,12 @@ The interesting things is: code is written during implementation, and it strictl
 A programming language is, in this vision, merely a technology with which to implement some behavior defined before.
 The question is: can code be used differently? Can it play another role?
 
+---
+
+
+In C, the only way to deal with the code you’re writing, is to compile it, execute it, and then interact with the running process, as a user. The “code writing” and “interaction” phases are strictly separated.
 But this kind of interaction is not the only possible!
-In C, the only way to deal with the code you’re writing, is to compile it, execute it, and then interact with the running process, as a user. The “code writing” and “interaction” phases are strictly separated. 
-Always more often, for many languages, another interaction mode is provided: REPLs
+Always more often, for many languages, another interaction mode is provided: _REPLs_
 
 REPL stands for
 * Read
@@ -46,6 +51,8 @@ REPL stands for
 
 Maybe you already worked with a REPL. One of the most widespread languages that offers a REPL is Matlab.
 Another is Python. We’ll make a little experiment in using REPL Python to solve a problem in a little time.
+
+---
 
 In REPLs, you have a sort of a shell.
 You can write an expression, that the shell READs.
@@ -58,6 +65,9 @@ The shell is ready to read another expression (LOOP).
 > 1+1
 2
 ```
+
+---
+
 Meny new language offers a REPL. Why?
 One reason is that they allow to learn the language much more easily.
 The other is that it offers the possibility to use the language as an “exploratory tool”
@@ -65,6 +75,8 @@ In using code to explore the ideas, code is not just an implementation technolog
 
 There’s an even more extreme way of using code to explore ideas: code can be the language of a performance! Look at this video:
 [https://www.youtube.com/watch?v=yY1FSsUV-8c]
+
+---
 
 In this course, we will use code in different ways, with different purposes.
 One of them will be to dynamically explore solution to problems.
@@ -83,7 +95,6 @@ There are different reason for this choice. The main ones are for Javascript are
 * It allows to write applications that can be shared most easily (it suffices to have a browser)
 * The fact that it runs in a browser makes it easy to augment applications with multi-user (e.g. collaborative) features (yes, we’ll experiment with that)
 * In the browser context, it offers some powerful APIs for creating and manipulating sound
-
 
 ---
 
