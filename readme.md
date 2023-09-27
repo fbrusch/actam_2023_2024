@@ -8,3 +8,6 @@
 
 ## Introduction to Javascript
 * ### [Birthday paradox in Javascript](Introduction_to_javascript/readme.md)
+
+## Web Audio API
+* ### [Introduction](web_audio/intro.md)
