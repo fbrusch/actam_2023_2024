@@ -1,0 +1,50 @@
+<html>
+
+<head></head>
+
+<body>
+    <button onclick="c.suspend()">suspend context</button>
+    <button onclick="c.resume()">resume context</button>
+
+    <script>
+        const c = new AudioContext();
+
+
+        function playFraMartino() {
+            setTimeout
+        }
+
+        var fraMartino = [0, 2, 4, 0, 0, 2, 4, 0];
+
+        function playNote(note, duration, offset) {
+            var o = c.createOscillator();
+            var g = c.createGain();
+
+            o.frequency.value = 440 * Math.pow(2, note / 12);
+            o.connect(g);
+            g.connect(c.destination);
+
+            /* schedule the envelope */arguments
+
+            var attack = 0.01;
+            var release = 0.5;
+
+            g.gain.setValueAtTime(0, c.currentTime);
+            g.gain.setValueAtTime(0, c.currentTime + offset);
+            g.gain.linearRampToValueAtTime(1, c.currentTime + attack + offset);
+            g.gain.linearRampToValueAtTime(0, c.currentTime + attack + release + offset);
+
+            o.start();
+
+
+
+        }
+
+        fraMartino.forEach((note, time) => playNote(note, 500, time / 2))
+
+
+    </script>
+</body>
+
+
+</html>
