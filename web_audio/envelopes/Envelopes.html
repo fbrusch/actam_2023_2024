@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title>Envelopes</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css">
+  <style>
+    .reveal .sourceCode {  /* see #7635 */
+      overflow: visible;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/black.css" id="theme">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+
+<section>
+<section id="envelopes" class="title-slide slide level1">
+<h1>Envelopes</h1>
+
+</section>
+<section id="limiting-sounds" class="slide level2">
+<h2>Limiting sounds</h2>
+<ul>
+<li>we have seen that we can create oscillators, start and stop
+them</li>
+<li>We can <code>start()</code> and <code>stop()</code> oscillators at
+definite times with <code>setTimeout()</code> to obtain
+<em>notes</em></li>
+<li>that’s not the best way, for different reasons</li>
+<li>abrupt on and off edges are “clicky”, for example</li>
+<li>we can create a <em>sound envelope</em>, that give us much more
+power on the note features</li>
+</ul>
+</section>
+<section id="envelopes-1" class="slide level2">
+<h2>Envelopes</h2>
+<p><img
+data-src="https://en.wikipedia.org/wiki/File:ADSR_parameter.svg" /></p>
+<ul>
+<li>in an envelope, amplitude is modulated to create a sound of finite
+duration</li>
+<li>we can create envelopes with different shapes, that can be used to
+create different sounds</li>
+<li>the most common envelopes are:
+<ul>
+<li><strong>ADSR</strong>: Attack, Decay, Sustain, Release</li>
+</ul></li>
+</ul>
+</section>
+<section id="timing" class="slide level2">
+<h2>Timing</h2>
+<ul>
+<li>How can we control amplitude to create the envelope? Can we
+<code>setTimeout</code> changes in amplitude? (for istance through
+<code>setTimeout(() =&gt; g.gain.value = a)</code>)</li>
+<li>Doesn’t seem a good idea…</li>
+</ul>
+</section>
+<section id="timing-parameters" class="slide level2">
+<h2>Timing parameters</h2>
+<ul>
+<li>There are different ways to change the value of an audio parameter:
+<ul>
+<li>through <code>&lt;parameter&gt;.value</code></li>
+<li>controlling with a wafeform
+(e.g. <code>o.connect(g.gain)</code>)</li>
+<li>through web audio API scheduled events!</li>
+</ul></li>
+</ul>
+</section>
+<section id="scheduling-change" class="slide level2">
+<h2>Scheduling change</h2>
+<ul>
+<li>There are some methods to schedule changes in audio parameters:</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setValueAtTime</span>()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">linearRampToValueAtTime</span>()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">setTargetAtTime</span>()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">exponentialRampToValueAtTime</span>()</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">setValueCurveAtTime</span>()</span></code></pre></div>
+</section>
+<section id="scheduling-change-2" class="slide level2">
+<h2>Scheduling change (2)</h2>
+<p>Example:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>g<span class="op">.</span><span class="at">gain</span><span class="op">.</span><span class="fu">setValueAtTime</span>(<span class="dv">0</span><span class="op">,</span> c<span class="op">.</span><span class="at">currentTime</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>g<span class="op">.</span><span class="at">gain</span><span class="op">.</span><span class="fu">linearRampToValueAtTime</span>(<span class="dv">1</span><span class="op">,</span> c<span class="op">.</span><span class="at">currentTime</span> <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>g<span class="op">.</span><span class="at">gain</span><span class="op">.</span><span class="fu">linearRampToValueAtTime</span>(<span class="dv">0</span><span class="op">,</span> c<span class="op">.</span><span class="at">currentTime</span> <span class="op">+</span> <span class="dv">2</span>)</span></code></pre></div>
+<p>Sets the gain to 0 at time 0, and ramps to 1 at by time 1</p>
+<button onclick="playBeep()">
+play beep
+</button>
+<script>
+    const c = new AudioContext();
+    function playBeep() {
+        var o = c.createOscillator();
+        var g = c.createGain();
+        o.connect(g);
+        g.connect(c.destination);
+        o.start(0);
+        g.gain.setValueAtTime(0, c.currentTime)
+        g.gain.linearRampToValueAtTime(1, c.currentTime + 1)
+        g.gain.linearRampToValueAtTime(0, c.currentTime + 2)
+    }
+</script>
+</section>
+<section id="exercise" class="slide level2">
+<h2>Exercise</h2>
+<p>Create a page with a button and two sliders</p>
+<ul>
+<li>The button plays a note</li>
+<li>The sliders control the attack and release time of the note</li>
+</ul>
+</section>
+<section id="interacting-with-page-elements" class="slide level2">
+<h2>Interacting with page elements</h2>
+<ul>
+<li>How do we interact with page elements?</li>
+<li>Through the DOM API!</li>
+<li>DOM = Document Object Model</li>
+<li>The DOM is a tree of nodes, that represent page elements</li>
+<li>From JS, we can obtain (find) page elements in various ways</li>
+<li>Once we have a reference to a page element, we can do various
+things</li>
+</ul>
+</section>
+<section id="getting-a-reference-to-a-page-element"
+class="slide level2">
+<h2>Getting a reference to a page element</h2>
+<ul>
+<li>We can get a reference to a page element by using the
+<code>getElementById()</code> method</li>
+<li>Example:</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> e <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;myButton&#39;</span>)<span class="op">;</span></span></code></pre></div>
+<ul>
+<li>We can set an event handler on a page element:</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>e<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">&#39;click&#39;</span><span class="op">,</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">function</span>() {</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">alert</span>(<span class="st">&quot;clicked&quot;</span>)<span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    })</span></code></pre></div>
+<button id="myButton">
+Click me!
+</button>
+<script>
+    const e = document.getElementById('myButton');
+    e.addEventListener('click',
+        function() {
+            alert("clicked");
+    })
+</script>
+</section>
+<section id="attack-release" class="slide level2">
+<h2>attack-release</h2>
+<iframe src="AttackRelease.html" width="300" height="300">
+</iframe>
+</section>
+<section id="sequencer-in-the-head" class="slide level2">
+<h2>Sequencer in the head</h2>
+<ul>
+<li>so we’ve seen how to schedule notes with
+<code>setTimeout</code></li>
+<li>and how to precisely control audio parameters change with
+<code>*AtTime</code> methods</li>
+<li>we have all we need for the simplest possible sequencer</li>
+</ul>
+</section>
+<section id="exercise-1" class="slide level2">
+<h2>Exercise</h2>
+<ul>
+<li>write a function <code>playSequence</code> that takes a list/array
+of notes and plays it repeatedly</li>
+<li>we have to be able to change the notes while the sequence is
+playing</li>
+<li>example:</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> notes <span class="op">=</span> [<span class="dv">0</span><span class="op">,</span><span class="dv">2</span><span class="op">,</span><span class="dv">4</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">2</span><span class="op">,</span><span class="dv">4</span><span class="op">,</span><span class="dv">0</span>]<span class="op">;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">playSequence</span>(notes)<span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>[<span class="op">...</span>after a <span class="cf">while</span><span class="op">...</span>]</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>notes[<span class="dv">2</span>] <span class="op">=</span> <span class="dv">15</span> <span class="co">// changes third note</span></span></code></pre></div>
+</section>
+<section id="solution" class="slide level2">
+<h2>Solution</h2>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> notes <span class="op">=</span> [<span class="dv">4</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="dv">12</span><span class="op">,</span> <span class="dv">45</span><span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">12</span>]<span class="op">;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> period <span class="op">=</span> <span class="dv">500</span><span class="op">;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> attack <span class="op">=</span> <span class="fl">0.01</span><span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> release <span class="op">=</span> <span class="fl">0.1</span><span class="op">;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">playSequence</span>(notes<span class="op">,</span> i) {</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="op">&gt;=</span> notes<span class="op">.</span><span class="at">length</span>) i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">playNote</span>(<span class="fu">noteFrequency</span>(notes[i])<span class="op">,</span> attack<span class="op">,</span> release)<span class="op">;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="pp">setTimeout</span>(() <span class="kw">=&gt;</span> <span class="fu">playSequence</span>(notes<span class="op">,</span> i <span class="op">+</span> <span class="dv">1</span>)<span class="op">,</span> period)<span class="op">;</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="fu">playSequence</span>(notes<span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span></code></pre></div>
+</section>
+<section id="exercises" class="slide level2">
+<h2>Exercises</h2>
+<ul>
+<li>can we introduce pauses?
+<ul>
+<li>play Fra Martino with the correct delays</li>
+</ul></li>
+<li>is the system polyphonic
+<ul>
+<li>define another sequence to play over (like a bassline, or a
+countermelody)</li>
+</ul></li>
+<li>can we associate parameters to sequences?
+<ul>
+<li>for example, can we play a melody with different attack and release
+times?</li>
+<li>can we modify parameters while the sequence is playing?</li>
+</ul></li>
+</ul>
+</section>
+<section id="solution-1" class="slide level2">
+<h2>Solution</h2>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> options <span class="op">=</span> {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">period</span><span class="op">:</span> <span class="dv">500</span><span class="op">,</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">attack</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">release</span><span class="op">:</span> <span class="fl">0.1</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">playSequence</span>(notes<span class="op">,</span> i<span class="op">,</span> options) {</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="op">&gt;=</span> notes<span class="op">.</span><span class="at">length</span>) i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">playNote</span>(<span class="fu">noteFrequency</span>(notes[i])<span class="op">,</span> options<span class="op">.</span><span class="at">attack</span><span class="op">,</span> options<span class="op">.</span><span class="at">release</span>)<span class="op">;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="pp">setTimeout</span>(() <span class="kw">=&gt;</span> <span class="fu">playSequence</span>(notes<span class="op">,</span> i <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> options)<span class="op">,</span> options<span class="op">.</span><span class="at">period</span>)<span class="op">;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</section>
+<section id="different-sections" class="slide level2">
+<h2>Different sections</h2>
+<ul>
+<li>now we can play different “sections”, with different parameters and
+even different times</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">playSequence</span>([<span class="dv">1</span><span class="op">,</span><span class="dv">5</span><span class="op">,</span><span class="dv">10</span><span class="op">,</span><span class="dv">4</span><span class="op">,</span><span class="dv">3</span>]<span class="op">,</span><span class="dv">0</span><span class="op">,</span>{<span class="dt">attack</span><span class="op">:</span><span class="fl">0.01</span><span class="op">,</span> <span class="dt">release</span><span class="op">:</span><span class="fl">0.1</span><span class="op">,</span><span class="dt">period</span><span class="op">:</span><span class="dv">200</span>})</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="pp">setTimeout</span>( () <span class="kw">=&gt;</span> <span class="fu">playSequence</span>([<span class="op">-</span><span class="dv">4</span><span class="op">,-</span><span class="dv">5</span><span class="op">,-</span><span class="dv">10</span><span class="op">,-</span><span class="dv">20</span><span class="op">,-</span><span class="dv">30</span>]<span class="op">,</span><span class="dv">0</span><span class="op">,</span>{<span class="dt">attack</span><span class="op">:</span><span class="fl">0.1</span><span class="op">,</span> <span class="dt">release</span><span class="op">:</span><span class="fl">0.2</span><span class="op">,</span><span class="dt">period</span><span class="op">:</span><span class="dv">200</span>})<span class="op">,</span> <span class="dv">5000</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="pp">setTimeout</span>( () <span class="kw">=&gt;</span> <span class="fu">playSequence</span>([<span class="dv">25</span><span class="op">,</span><span class="dv">35</span><span class="op">,</span><span class="dv">25</span><span class="op">,</span><span class="dv">26</span><span class="op">,</span><span class="dv">80</span>]<span class="op">,</span><span class="dv">0</span><span class="op">,</span>{<span class="dt">attack</span><span class="op">:</span><span class="fl">0.01</span><span class="op">,</span> <span class="dt">release</span><span class="op">:</span><span class="fl">0.1</span><span class="op">,</span><span class="dt">period</span><span class="op">:</span><span class="dv">200</span>})<span class="op">,</span> <span class="dv">10000</span>)</span></code></pre></div>
+<ul>
+<li><hr /></li>
+</ul>
+</section>
+<section id="exercise-2" class="slide level2">
+<h2>Exercise</h2>
+<ul>
+<li>write the best tune you can think with sequences, as a standalone
+html file that starts pushing a button</li>
+<li>submit as a pull request to the github <code>tunes</code>
+folder</li>
+</ul>
+</section></section>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.js"></script>
+
+  <!-- reveal.js plugins -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js/plugin/notes/notes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js/plugin/search/search.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js/plugin/zoom/zoom.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // reveal.js plugins
+        plugins: [
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>
