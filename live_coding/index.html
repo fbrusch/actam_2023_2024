@@ -1,0 +1,45 @@
+<html>
+
+<head></head>
+
+<body>
+    <h1>My super live coding sequencer!!</h1>
+    <script>
+
+        const c = new AudioContext();
+
+        // let's instantiate a compressor
+        const compressor = c.createDynamicsCompressor();
+        compressor.connect(c.destination);
+
+        function playNote(note, attack, release) {
+            const oscillator = c.createOscillator();
+            oscillator.type = "sine";
+            oscillator.frequency.value = note;
+            // now let's implement a triangular envelope
+            const gain = c.createGain();
+            gain.gain.setValueAtTime(0, c.currentTime);
+            gain.gain.linearRampToValueAtTime(1, c.currentTime + attack);
+            gain.gain.linearRampToValueAtTime(0, c.currentTime + attack + release);
+            oscillator.connect(gain);
+            gain.connect(compressor);
+            oscillator.start(c.currentTime);
+            oscillator.stop(c.currentTime + attack + release);
+        }
+
+        // now let's play some notes
+
+        function playSequence(notes, i, options) {
+            playNote(notes[i], options[0], options[1]);
+            setTimeout(() => playSequence(notes, (i + 1) % notes.length, options),
+                options[2]);
+
+
+
+        }
+
+
+    </script>
+</body>
+
+</html>
