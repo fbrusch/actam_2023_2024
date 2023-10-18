@@ -1,0 +1,63 @@
+<html>
+    <head></head>
+    <body>
+        <button onclick="playBufferSine(440, 1)">Play Sine</button>
+        <button onclick="playModulatedNoise(10, 5)">Play modulated noise</button>
+        <script>
+            const c = new AudioContext();
+
+            function playBufferSine(f, duration) {
+
+                const b = c.createBuffer(1, c.sampleRate * duration, c.sampleRate);
+                const d = b.getChannelData(0);
+                for (let i = 0; i < d.length; i++) {
+                    
+                    //i/c.sampleRate * 2 * Math.PI -> c.sampleRate / 2 * Math.PI
+
+                    d[i] = Math.sin(f*i*2*Math.PI/c.sampleRate/2*Math.PI);    
+                    //d[i] = Math.sin(2 * Math.PI * f * i / c.sampleRate);
+                }
+
+                const s = c.createBufferSource();
+                s.buffer = b;
+                s.connect(c.destination);
+                s.start();
+            }
+
+            function playModulatedNoise(f,duration) {
+                // https://www.audiocheck.net/modulated-noise.html
+                const b = c.createBuffer(1, c.sampleRate * duration, c.sampleRate);
+                const d = b.getChannelData(0);
+                for (let i = 0; i < d.length; i++) {
+                    d[i] = (2 + Math.sin(2 * Math.PI * f * i / c.sampleRate))* 0.5 * Math.random() * 2 -1;
+                }
+                const s = c.createBufferSource();
+                s.buffer = b;
+                s.connect(c.destination);
+                s.start();
+            }
+
+            function playKick(startFrequency, frequencyDecayRate, amplitudeDecayRate, duration) 
+            {
+                // i have to fill a buffer with a dampened oscillation
+                // the oscillation is expentially dampened
+                // here we go
+
+                const b = c.createBuffer(1, c.sampleRate * duration, c.sampleRate);
+                const d = b.getChannelData(0);
+                for (let i = 0; i < d.length; i++) {
+                    let frequencyDampeningFactor = Math.exp(-i * frequencyDecayRate / c.sampleRate);
+                    let amplitudeDampeningFactor = Math.exp(-i * amplitudeDecayRate / c.sampleRate);
+                    d[i] = Math.sin(frequencyDampeningFactor * Math.PI * startFrequency * i  
+                                    / c.sampleRate) * amplitudeDampeningFactor;
+                    }
+                const s = c.createBufferSource();
+                s.buffer = b;
+                s.connect(c.destination);
+                s.start();
+                
+            }
+        </script>
+
+    </body>
+</html>
