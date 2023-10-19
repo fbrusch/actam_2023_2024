@@ -1,0 +1,231 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <canvas id="rectangle"></canvas>
+        <canvas id="sine"></canvas>
+        <canvas id="tiltedSquare"></canvas>
+        <canvas id="rotatingSquare"></canvas>
+        <canvas id="movinSine"></canvas>
+        <canvas id="movinRadialSine"></canvas>
+        
+        <script>
+            
+    var canvas = document.getElementById("rectangle");
+    var ctx = canvas.getContext("2d");
+
+    // Definisci le dimensioni e la posizione del rettangolo
+    var x = 50;     // posizione x del rettangolo
+    var y = 50;     // posizione y del rettangolo
+    var width = 200;  // larghezza del rettangolo
+    var height = 100; // altezza del rettangolo
+
+    // Disegna il rettangolo
+    ctx.fillStyle = "blue"; // colora il rettangolo di blu (puoi cambiare colore come preferisci)
+    ctx.fillRect(x, y, width, height);
+
+    function drawSine()  {
+    var canvas = document.getElementById("sine");
+    var ctx = canvas.getContext("2d");
+
+    var width = canvas.width;
+    var height = canvas.height;
+
+    // Impostazioni per la funzione seno
+    var scale = 50;         // quanta "altezza" desideri per il tuo seno
+    var cycles = 10;        // numero di cicli del seno
+    var frequency = (2 * Math.PI * cycles) / width;
+
+    // Trasla l'asse y al centro del canvas
+    ctx.translate(0, height / 2);
+    
+    // Opzionale: Disegna una linea orizzontale per l'asse x
+    ctx.strokeStyle = "lightgray";
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(width, 0);
+    ctx.stroke();
+
+    // Disegna la funzione seno
+    ctx.beginPath();
+    ctx.strokeStyle = "red";
+    for(var x = 0; x < width; x++) {
+        var y = -Math.sin(x * frequency) * scale; // Il meno è perché nell'ambito dei canvas, l'asse y è invertito
+        if (x == 0) {
+            ctx.moveTo(x, y);
+        } else {
+            ctx.lineTo(x, y);
+        }
+    }
+    ctx.stroke();
+};
+drawSine();
+
+function drawTiltedSquare() {
+    var canvas = document.getElementById("tiltedSquare");
+    var ctx = canvas.getContext("2d");
+
+    var width = canvas.width;
+    var height = canvas.height;
+
+    var side = 100; // Lato del quadrato
+    var centerX = width / 2;
+    var centerY = height / 2;
+
+    // Sposta l'origine al centro del canvas
+    ctx.translate(centerX, centerY);
+
+    // Ruota il contesto di 30 gradi (pi/6 radianti)
+    ctx.rotate(Math.PI / 6);
+
+    // Disegna il quadrato ruotato
+    ctx.beginPath();
+    ctx.rect(-side/2, -side/2, side, side); // Il quadrato viene centrato rispetto all'origine (che ora è il centro del canvas)
+    ctx.fillStyle = "blue";
+    ctx.fill();
+    ctx.strokeStyle = "black";
+    ctx.stroke();
+
+    // Ripristina la traslazione e la rotazione in modo che non influenzino altri disegni
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+}
+
+// Chiama la funzione per disegnare il quadrato ruotato
+drawTiltedSquare();
+
+var startTime; // Questa variabile memorizzerà l'ora di inizio dell'animazione
+
+function drawRotatingSquare(currentTime) {
+    if (!startTime) {
+        startTime = currentTime;
+    }
+
+    var canvas = document.getElementById("rotatingSquare");
+    var ctx = canvas.getContext("2d");
+    var width = canvas.width;
+    var height = canvas.height;
+
+    var rotationSpeed = 0.5 * 2 * Math.PI; // 0.5 giri al secondo in radianti
+    var elapsedTime = (currentTime - startTime) / 1000; // tempo trascorso in secondi
+    var currentAngle = rotationSpeed * elapsedTime;
+
+    var side = 100; // Lato del quadrato
+    var centerX = width / 2;
+    var centerY = height / 2;
+
+    // Pulisci il canvas
+    ctx.clearRect(0, 0, width, height);
+
+    // Sposta l'origine al centro del canvas e ruota
+    ctx.translate(centerX, centerY);
+    ctx.rotate(currentAngle);
+
+    // Disegna il quadrato ruotato
+    ctx.beginPath();
+    ctx.rect(-side/2, -side/2, side, side);
+    ctx.fillStyle = "blue";
+    ctx.fill();
+    ctx.strokeStyle = "black";
+    ctx.stroke();
+
+    // Ripristina la traslazione e la rotazione
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+    // Richiedi il prossimo frame
+    requestAnimationFrame(drawRotatingSquare);
+}
+
+// Avvia l'animazione
+drawRotatingSquare();
+
+var phase = 0; // Fase iniziale
+var frequency = 2 * Math.PI / 100; // Frequenza: quante volte il seno completa un ciclo in 100 pixel
+
+function drawMovingSine() {
+    var canvas = document.getElementById("movinSine");
+    var ctx = canvas.getContext("2d");
+    var width = canvas.width;
+    var height = canvas.height;
+    var amplitude = height / 4; // Altezza massima del seno
+
+    // Pulisci il canvas
+    ctx.clearRect(0, 0, width, height);
+
+    // Imposta il colore di disegno
+    ctx.strokeStyle = "green";
+
+    ctx.beginPath();
+    for (var x = 0; x < width; x++) {
+        var y = height / 2 + amplitude * Math.sin(frequency * x + phase);
+        if (x == 0) {
+            ctx.moveTo(x, y);
+        } else {
+            ctx.lineTo(x, y);
+        }
+    }
+    ctx.stroke();
+
+    // Aggiorna la fase per il prossimo frame
+    phase -= frequency * 2; // il valore "2" determina la velocità della traslazione. Modifica per aumentare/ridurre la velocità.
+
+    // Richiedi il prossimo frame
+    requestAnimationFrame(drawMovingSine);
+}
+
+// Avvia l'animazione
+drawMovingSine();
+
+var phase = 0; // Fase iniziale
+
+function drawRadialOscilloscope() {
+    var canvas = document.getElementById("movinRadialSine");
+    var ctx = canvas.getContext("2d");
+    var width = canvas.width;
+    var height = canvas.height;
+    var centerX = width / 2;
+    var centerY = height / 2;
+    var radius = Math.min(centerX, centerY) - 20; // Dimensione base del raggio, 20 pixel meno della metà della dimensione minore del canvas
+
+    // Pulisci il canvas
+    ctx.clearRect(0, 0, width, height);
+
+    // Trasla il contesto in modo che il centro del canvas sia l'origine
+    ctx.translate(centerX, centerY);
+
+    ctx.beginPath();
+    for (var theta = 0; theta < 2 * Math.PI; theta += 0.01) {
+        var rho = radius * (1 + 0.1 * Math.sin(theta*15 + phase));
+        var x = rho * Math.cos(theta);
+        var y = rho * Math.sin(theta);
+
+        if (theta === 0) {
+            ctx.moveTo(x, y);
+        } else {
+            ctx.lineTo(x, y);
+        }
+    }
+    ctx.closePath(); // chiudi il percorso
+    ctx.strokeStyle = "blue";
+    ctx.stroke();
+
+    // Ripristina la traslazione del contesto
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+    // Aggiorna la fase per il prossimo frame
+    phase += 0.5;
+
+    // Richiedi il prossimo frame
+    requestAnimationFrame(drawRadialOscilloscope);
+}
+
+// Avvia l'animazione
+drawRadialOscilloscope();
+
+
+
+
+
+        </script>
+    </body>
+</html>
