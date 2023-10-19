@@ -16,4 +16,4 @@
 ## Canvas
 
 * ## [Introduction](canvas/intro.html)
-* ## [Examples/Excercises)(canvas/canvas.html)
+* ## [Examples/Excercises](canvas/canvas.html)
