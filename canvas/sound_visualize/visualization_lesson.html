@@ -1,0 +1,33 @@
+<html>
+
+<head></head>
+<body>
+
+    <canvas id="soundVisual"></canvas>>
+    <script>
+        const c = new AudioContext();
+        const o = c.createOscillator();
+        const a = c.createAnalyser();
+        o.connect(a);
+        a.connect(c.destination);
+
+        const canvas = document.getElementById("soundVisual");
+        const ctx = canvas.getContext("2d");
+
+        function drawSamples(samples) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.moveTo(0, 0);
+            ctx.beginPath();
+            for (let i = 0; i < samples.length; i++) {
+                ctx.lineTo(i, samples[i]/255*canvas.height);
+            }
+            ctx.stroke();
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>
