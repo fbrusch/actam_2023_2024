@@ -1,0 +1,64 @@
+<html>
+    <head></head>
+    <body>
+        <canvas></canvas>
+        <button id="start" onclick="takeUserAudioAndApplyDelay()">start</button>
+
+        <script>
+
+        const c = new AudioContext();
+
+        const d = c.createDelay();
+        d.delayTime.value = 1;
+        d.connect(c.destination);
+        const g = c.createGain();
+        d.connect(g);
+        g.connect(d);
+
+        function takeUserAudioAndApplyDelay() {
+            c.resume();
+            navigator.getUserMedia({ audio: true }, 
+                function (stream)
+                {
+                    const source = c.createMediaStreamSource(stream);
+                    source.connect(d);
+                }, console.log);
+        }
+        // draw the waveform coming out of the delay d on a canvas with an
+        // analyser node
+        const an = c.createAnalyser();
+        d.connect(an);
+
+        function drawSound() {
+            // get the time sample from an and plot them
+
+            const bufferLength = an.frequencyBinCount;
+            const dataArray = new Float32Array(bufferLength);
+            an.getFloatTimeDomainData(dataArray);
+            const canvas = document.querySelector('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = 'rgb(255, 255, 255)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgb(0, 0, 0)';
+            // draw samples as a line, like an oscilloscope
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height/2);
+            for(let i = 0; i < canvas.width; i++) {
+                ctx.lineTo(i, 
+                    canvas.height/2 + dataArray[Math.round(i/canvas.width*bufferLength)]*canvas.height)
+            }
+            ctx.stroke()
+        }
+
+        function oscilloscope() {
+            drawSound();
+            window.requestAnimationFrame(oscilloscope);        
+        }
+
+        oscilloscope()
+
+        
+    </script>
+
+    </body>
+</html>
