@@ -1,0 +1,105 @@
+<html>
+    <head></head>
+    <body>
+
+        <div id="state"></div>
+        <canvas id="waveform"></canvas>
+
+        <script>
+
+            const c = new AudioContext();
+
+            function play(note) {
+                const oscillator = c.createOscillator();
+                oscillator.frequency.value = 440*Math.pow(2,(note-57)/12);
+                oscillator.connect(c.destination);
+                oscillator.start();
+                oscillator.stop(c.currentTime + 0.1);
+            }
+
+            var state = {msg:"ciao", 
+            recordHeader: 0, 
+            recording:true,
+            clipStart: 1,
+            clipEnd: 2}
+
+            function drawState(state) {
+                document.getElementById("state").innerText = JSON.stringify(state)
+            }
+
+            
+
+
+            var sampleBuffer = c.createBuffer(1, 10*c.sampleRate, c.sampleRate);
+
+            var recorder = c.createScriptProcessor(1024, 1, 1);
+            recorder.onaudioprocess = function(e) {
+                if(state.recording == false) {return}
+                var input = e.inputBuffer.getChannelData(0);
+                var sampleData = sampleBuffer.getChannelData(0);
+                for (var i = 0; i < input.length; i++) {
+                    sampleData[state.recordHeader] = input[i];
+                    state.recordHeader = (state.recordHeader + 1) % sampleBuffer.length;
+                }
+            }
+            recorder.connect(c.destination);
+
+            function connectMic() {
+                navigator.getUserMedia({audio: true}, (stream) => {
+                    var mss = c.createMediaStreamSource(stream);
+                    mss.connect(recorder);
+                }, console.log)
+
+
+            }
+
+            function playClip(buffer, begin, end, playbackRate) {
+                var clipBuffer = c.createBuffer(1, (end-begin)*c.sampleRate, 
+                                    c.sampleRate);
+                var clipData = clipBuffer.getChannelData(0);
+                for (var i = 0; i < clipBuffer.length; i++) {
+                    clipData[i] = buffer.getChannelData(0)[(begin*c.sampleRate)+i];
+                }
+                var bs = c.createBufferSource();
+                bs.buffer = clipBuffer;
+                bs.playbackRate.value = playbackRate;
+                bs.connect(c.destination);
+                bs.start()
+
+            }
+
+            function drawWaveform() {
+                var ctx = document.getElementById('waveform').getContext('2d');
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                var w = ctx.canvas.width;
+                var h = ctx.canvas.height;
+                var sampleData = sampleBuffer.getChannelData(0);
+                ctx.beginPath();
+                ctx.moveTo(0, h/2);
+                for (var i = 0; i < w; i++) {
+                    ctx.lineTo(i, h/2+h*sampleData[i*sampleData.length/w])
+                }
+                ctx.stroke();
+                // draw clip boundaries
+                ctx.beginPath();
+                var startPosition = state.clipStart*c.sampleRate/sampleBuffer.length*w;
+                ctx.moveTo(startPosition, 0);
+                ctx.lineTo(startPosition, h);
+                ctx.stroke();
+            }
+
+
+                
+            function continuouslyDrawState() {
+                drawState(state);
+                drawWaveform();
+                window.requestAnimationFrame(continuouslyDrawState);
+            }
+
+            continuouslyDrawState()
+
+
+
+        </script>
+    </body>
+</html>
