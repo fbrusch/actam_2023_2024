@@ -3,7 +3,7 @@
 ## [Introduction](Introduction/readme.html)
 
 ## Coding for problem solving
-* ### [Introdution](Python_problem_solving/readme.html)
+* ### [Introduction](Python_problem_solving/readme.html)
 * ### [Notebook for birthday paradox](Python_problem_solving/BIrthday.ipynb)
 
 ## Introduction to Javascript
