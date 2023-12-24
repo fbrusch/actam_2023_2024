@@ -1,7 +1,8 @@
 **FAQ for the ACTAM project presentation and evaluation criteria**
 
 **Q: Is it necessary to send code or other materials before the examination day?**
-A: No. All materials should be delivered on the day of the exam, in the form of a repository accessible on a sharing platform (e.g., GitHub, GitLab, etc.). The expected content in the repository includes:
+
+**A: No**. All materials should be delivered on the day of the exam, in the form of a repository accessible on a sharing platform (e.g., GitHub, GitLab, etc.). The expected content in the repository includes:
 - The project code
 - A readme.md that:
   - Explains the project's purpose (e.g., a sequencer with automatic generation of something, etc.). Why is the project useful/noteworthy?
