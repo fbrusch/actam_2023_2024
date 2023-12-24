@@ -11,6 +11,7 @@ A: No. All materials should be delivered on the day of the exam, in the form of 
   - Contains a link to a page where the project is hosted and functional (the simplest way, as discussed in class, is through GitHub pages)
 
 **Q: What about the presentation?**
+
 **A: The presentation should:**
 - Highlight the functionality offered by the application, and why it is useful or interesting
 - Discuss the challenges encountered and how they were resolved
@@ -19,6 +20,7 @@ A: No. All materials should be delivered on the day of the exam, in the form of 
 There are no constraints on the form of the presentation. Everyone is free to choose the format they believe best conveys the content (slides, oral presentation, use of the blackboard, etc.).
 
 **Q: What are the evaulation criteria?**
+
 **A: Evaluation criteria include:**
 - The value of the idea. The sources of value can vary: an idea may be particularly original, another may be a classic (e.g., a drum machine) but executed exceptionally well or with innovative aspects, etc. Specific aspects of the projects have already been discussed in the reviews.
 - Correct use of tools/technologies
